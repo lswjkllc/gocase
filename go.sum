@@ -1,4 +1,6 @@
 github.com/marusama/cyclicbarrier v1.1.0 h1:ol/AG+sjvh5yz832avbNjaowoerBuD3AgozxL+aD9u0=
 github.com/marusama/cyclicbarrier v1.1.0/go.mod h1:5u93l83cy51YXdz6eKq6kO9+9mGAooB6DHMAxcSuWwQ=
+github.com/petermattis/goid v0.0.0-20220111183729-e033e1e0bdb5 h1:AdVIf7YN+kn8QAapO6IQHtHKSBeSiNgkSS8Yai/xMmo=
+github.com/petermattis/goid v0.0.0-20220111183729-e033e1e0bdb5/go.mod h1:pxMtw7cyUw6B2bRH0ZBANSPg+AoSud1I1iyJHI69jH4=
 golang.org/x/sync v0.0.0-20210220032951-036812b2e83c h1:5KslGYwFpkhGh+Q16bwMP3cOontH8FOep7tGV86Y7SQ=
 golang.org/x/sync v0.0.0-20210220032951-036812b2e83c/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
