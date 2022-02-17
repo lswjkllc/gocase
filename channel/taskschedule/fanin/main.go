@@ -7,7 +7,7 @@ import (
 )
 
 /// 基于 递归 实现
-func fanInRec(chans ...<-chan interface{}) <-chan interface{} {
+func fanInRec(chans ...chan interface{}) chan interface{} {
 	switch len(chans) {
 	case 0:
 		c := make(chan interface{})
@@ -25,7 +25,7 @@ func fanInRec(chans ...<-chan interface{}) <-chan interface{} {
 	}
 }
 
-func mergeTwo(a, b <-chan interface{}) <-chan interface{} {
+func mergeTwo(a, b chan interface{}) chan interface{} {
 	c := make(chan interface{})
 	go func() {
 		defer close(c)
