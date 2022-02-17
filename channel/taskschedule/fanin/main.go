@@ -50,7 +50,7 @@ func mergeTwo(a, b <-chan interface{}) <-chan interface{} {
 }
 
 /// 基于 反射 实现
-func fanInReflect(chans ...<-chan interface{}) <-chan interface{} {
+func fanInReflect(chans ...<-chan interface{}) chan interface{} {
 	out := make(chan interface{})
 	go func() {
 		defer close(out)
@@ -74,6 +74,7 @@ func fanInReflect(chans ...<-chan interface{}) <-chan interface{} {
 				cases = append(cases[:i], cases[i+1:]...)
 				continue
 			}
+			count -= 1
 			out <- v.Interface()
 		}
 	}()
@@ -84,6 +85,7 @@ func sig(after time.Duration) <-chan interface{} {
 	c := make(chan interface{})
 	go func() {
 		defer close(c)
+		c <- after
 		time.Sleep(after)
 	}()
 	return c
@@ -94,11 +96,13 @@ func main() {
 	// fanin := fanInRec
 	fanin := fanInReflect
 
-	out := <-fanin(
+	out := fanin(
 		sig(1*time.Second),
 		sig(2*time.Second),
 		sig(3*time.Second),
 	)
 
-	fmt.Printf("done after %v, output: %v", time.Since(start), out)
+	for v := range out {
+		fmt.Printf("done after %v, output: %v\n", time.Since(start), v)
+	}
 }
