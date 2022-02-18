@@ -42,6 +42,8 @@ func main() {
 
 	// 输出
 	outs := []chan interface{}{make(chan interface{}), make(chan interface{}), make(chan interface{})}
+
+	// 执行 扇出
 	fanOut(in, outs, false)
 
 	// 打印输出
