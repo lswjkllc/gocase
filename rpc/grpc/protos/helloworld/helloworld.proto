@@ -3,9 +3,9 @@ syntax = "proto3";
 
 // 编译: cd protos && protoc --go_out=plugins=grpc:. helloworld.proto
 // 其中: grpc:. 表示输出到当前目录
-option go_package = ".;protos";
+option go_package = ".;helloword";
 
-package protos;
+package helloworld;
 
 // The greeting service definition.
 service Greeter {

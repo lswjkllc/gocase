@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	pb "gocase/rpc/grpc/protos/helloworld"
+	pb "gocase/rpc/grpc/protos/helloworldwithhttp"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
