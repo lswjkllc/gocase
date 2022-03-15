@@ -2,6 +2,7 @@ package main
 
 import "fmt"
 
+// 查找左边界
 func searchLeftBound(nums []int, target int) int {
 	if len(nums) == 0 {
 		return -1
@@ -23,6 +24,7 @@ func searchLeftBound(nums []int, target int) int {
 	return left
 }
 
+// 查找右边界
 func searchRightBound(nums []int, target int) int {
 	if len(nums) == 0 {
 		return -1
@@ -44,6 +46,7 @@ func searchRightBound(nums []int, target int) int {
 	return right
 }
 
+// 查找中间
 func search(nums []int, target int) int {
 	if len(nums) == 0 {
 		return -1
