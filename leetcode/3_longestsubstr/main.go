@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 /*
 题⽬⼤意
@@ -12,11 +14,35 @@ import "fmt"
 	以此类推，每次移动需要计算当前⻓度，并判断是否需要更新最⼤⻓度，最终最⼤的值就是题⽬中的所求。
 */
 
-func LengthOfLongestSubstring(s string) int {
-	return 0
+func lengthOfLongestSubstring(s string) int {
+	// base line
+	sLen := len(s)
+	if sLen <= 1 {
+		return sLen
+	}
+	// 左右指针 结果
+	left, right, res := 0, 0, 0
+	// 窗口: 记录每个字符的数量
+	window := map[byte]int{}
+
+	for right < sLen {
+		c1 := s[right]
+		window[c1]++
+		right++
+
+		for window[c1] > 1 {
+			c2 := s[left]
+			window[c2]--
+			left++
+		}
+
+		res = max(res, right-left)
+	}
+
+	return res
 }
 
-func Max(a int, b int) int {
+func max(a int, b int) int {
 	if a > b {
 		return a
 	}
@@ -24,6 +50,7 @@ func Max(a int, b int) int {
 }
 
 func main() {
-	s := "dafdafd23344g"
-	fmt.Println(LengthOfLongestSubstring(s))
+	fmt.Println("abcabcbb =>", lengthOfLongestSubstring("abcabcbb"))
+	fmt.Println("bbbbb =>", lengthOfLongestSubstring("bbbbb"))
+	fmt.Println("pwwkew =>", lengthOfLongestSubstring("pwwkew"))
 }
