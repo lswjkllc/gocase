@@ -10,7 +10,7 @@ import (
 
 ===> 在每一天，你可能会决定购买和/或出售股票。
 ===> 你在任何时候 最多 只能持有 一股 股票。
-===> 你也可以购买它，然后在 同一天 出售。
+===> 你也可以购买它，然后在 同一天 出售。（当天卖出没有利润，所以这个条件没有意义）
 ===> k = +infinity 表示不限制交易次数
 
 返回 你能获得的 最大 利润 。
@@ -69,19 +69,20 @@ func MaxProfit2(prices []int) int {
 	return maxprofit
 }
 
+// 框架版本
 func MaxProfit3(prices []int) int {
 	pLen := len(prices)
-	if pLen < 1 {
+	if pLen < 2 {
 		return 0
 	}
 	/*
-			如果k为正无穷，那么就可以认为k和k - 1是一样的。框架：
-				dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
-				dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
-		            		= max(dp[i-1][k][1], dp[i-1][k][0] - prices[i])
-			我们发现数组中的 k 已经不会改变了，也就是说不需要记录 k 这个状态了：
-				dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
-				dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i])
+		如果k为正无穷，那么就可以认为k和k - 1是一样的。框架：
+			dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
+			dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
+		            	= max(dp[i-1][k][1], dp[i-1][k][0] - prices[i])
+		我们发现数组中的 k 已经不会改变了，也就是说不需要记录 k 这个状态了：
+			dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
+			dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i])
 
 	*/
 	dp := make([][2]int, pLen)
@@ -97,22 +98,26 @@ func MaxProfit3(prices []int) int {
 	return dp[pLen-1][0]
 }
 
-func MaxProfit(prices []int) int {
+// 空间复杂度优化版本
+func maxProfit(prices []int) int {
 	pLen := len(prices)
-	if pLen < 1 {
+	if pLen < 2 {
 		return 0
 	}
-	dp_i_0, dp_i_1, temp := 0, math.MinInt32, 0
+	dp_i_0, dp_i_1 := 0, math.MinInt32
 	for i := 0; i < pLen; i++ {
-		temp = dp_i_0
+		// 因为 k != 1, 需要保存上一轮的 dp_i_0（sell结果）
+		temp := dp_i_0
+		// sell
 		dp_i_0 = Max(dp_i_0, dp_i_1+prices[i])
+		// buy
 		dp_i_1 = Max(dp_i_1, temp-prices[i])
 	}
 	return dp_i_0
 }
 
 func main() {
-	fmt.Println("prices: [7, 1, 5, 3, 6, 4] k: +infinity => 7", MaxProfit3([]int{7, 1, 5, 3, 6, 4}) == 7)
-	fmt.Println("prices: [1, 2, 3, 4, 5] k: +infinity => 4", MaxProfit3([]int{1, 2, 3, 4, 5}) == 4)
-	fmt.Println("prices: [7, 6, 4, 3, 1] k: +infinity => 0", MaxProfit3([]int{7, 6, 4, 3, 1}) == 0)
+	fmt.Println("prices:[7, 1, 5, 3, 6, 4] k:+inf => 7", maxProfit([]int{7, 1, 5, 3, 6, 4}))
+	fmt.Println("prices:[1, 2, 3, 4, 5] k:+inf => 4", maxProfit([]int{1, 2, 3, 4, 5}))
+	fmt.Println("prices:[7, 6, 4, 3, 1] k:+inf => 0", maxProfit([]int{7, 6, 4, 3, 1}))
 }
