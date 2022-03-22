@@ -48,6 +48,7 @@ func CanPartition(nums []int) bool {
 	return dp[N][W]
 }
 
+// 空间复杂度优化
 func canPartition(nums []int) bool {
 	// 直接根据集合长度判断
 	N := len(nums)
