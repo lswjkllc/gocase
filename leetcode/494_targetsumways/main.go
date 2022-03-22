@@ -68,6 +68,15 @@ B 集合: 加 - 的集合
 // 动态规划（空间复杂度优化版本）
 func findTargetSumWays(nums []int, target int) int {
 	N := len(nums)
+	if N == 0 {
+		return 0
+	}
+	if N == 1 {
+		if nums[0]-target == 0 || nums[0]+target == 0 {
+			return 1
+		}
+		return 0
+	}
 	sum := 0
 	for i := 0; i < N; i++ {
 		sum += nums[i]
@@ -95,4 +104,5 @@ func findTargetSumWays(nums []int, target int) int {
 func main() {
 	fmt.Println("nums:[1,1,1,1,1] target:3 => 5", findTargetSumWays([]int{1, 1, 1, 1, 1}, 3))
 	fmt.Println("nums:[1] target:1 => 1", findTargetSumWays([]int{1}, 1))
+	fmt.Println("nums:[100] target:-200 => 0", findTargetSumWays([]int{1}, 1))
 }
