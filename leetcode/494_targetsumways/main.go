@@ -90,10 +90,10 @@ func findTargetSumWays(nums []int, target int) int {
 	dp := make([]int, W+1)
 	// 设置初值: 当目标为 0 时, 具有唯一一种方法（很重要）
 	dp[0] = 1
-	for i := 1; i <= N; i++ {
+	for i := 0; i < N; i++ {
 		for w := W; w >= 0; w-- {
-			if w >= nums[i-1] {
-				dp[w] = dp[w] + dp[w-nums[i-1]]
+			if w >= nums[i] {
+				dp[w] = dp[w] + dp[w-nums[i]]
 			}
 		}
 	}
@@ -104,5 +104,5 @@ func findTargetSumWays(nums []int, target int) int {
 func main() {
 	fmt.Println("nums:[1,1,1,1,1] target:3 => 5", findTargetSumWays([]int{1, 1, 1, 1, 1}, 3))
 	fmt.Println("nums:[1] target:1 => 1", findTargetSumWays([]int{1}, 1))
-	fmt.Println("nums:[100] target:-200 => 0", findTargetSumWays([]int{1}, 1))
+	fmt.Println("nums:[100] target:-200 => 0", findTargetSumWays([]int{100}, -200))
 }
