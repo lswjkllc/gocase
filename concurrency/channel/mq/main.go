@@ -24,7 +24,6 @@ type Payload struct {
 
 func (p *Payload) UploadToS3() error {
 	time.Sleep(200 * time.Millisecond)
-	fmt.Println("Upload success...", p.Id)
 	return nil
 	// the storageFolder method ensures that there are no name collision in
 	// case we get same timestamp in the key name
@@ -52,13 +51,16 @@ type Job struct {
 
 // Worker represents the worker that executes the job
 type Worker struct {
+	Id         int
 	WorkerPool chan chan Job
 	JobChannel chan Job
 	quit       chan bool
+	count      int
 }
 
-func NewWorker(workerPool chan chan Job) Worker {
+func NewWorker(id int, workerPool chan chan Job) Worker {
 	return Worker{
+		Id:         id,
 		WorkerPool: workerPool,
 		JobChannel: make(chan Job),
 		quit:       make(chan bool)}
@@ -70,16 +72,19 @@ func (w Worker) Start() {
 	go func() {
 		for {
 			// register the current worker into the worker queue.
-			// 生产 chan Job
+			// 生产 chan Job（将 chan Job 放入池子中）
 			w.WorkerPool <- w.JobChannel
 
+			fmt.Printf("[%d-%d] 等待 select  ...\n", w.Id, w.count)
 			select {
-			case job := <-w.JobChannel: // 消费 Job
+			// ! 阻塞: 消费 Job（从 chan Job 中获取 job）
+			case job := <-w.JobChannel:
 				// we have received a work request.
 				if err := job.Payload.UploadToS3(); err != nil {
 					fmt.Printf("Error uploading to S3: %s", err.Error())
 				}
-
+				w.count += 1
+				fmt.Printf("[%d-%d] 消费 success ...\n", w.Id, w.count)
 			case <-w.quit:
 				// we have received a signal to stop
 				fmt.Println("Received stop signal")
@@ -111,7 +116,7 @@ func NewDispatcher(maxWorkers int) *Dispatcher {
 func (d *Dispatcher) Run() {
 	// starting n number of workers
 	for i := 0; i < d.maxWorkers; i++ {
-		worker := NewWorker(d.WorkerPool)
+		worker := NewWorker(i+1, d.WorkerPool)
 		worker.Start()
 	}
 
@@ -128,11 +133,11 @@ func (d *Dispatcher) dispatch() {
 		go func(job Job) {
 			// try to obtain a worker job channel that is available.
 			// this will block until a worker is idle
-			// 消费 chan Job
+			// ! 阻塞: 消费 chan Job（从池子里面去取一个 chan Job）
 			jobChannel := <-d.WorkerPool
 
 			// dispatch the job to the worker job channel
-			// 生产 Job
+			// 生产 Job（向 chan Job 中添加 Job）
 			jobChannel <- job
 		}(job)
 	}
