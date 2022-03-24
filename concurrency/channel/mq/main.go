@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net"
+	"net/http"
 	"time"
 )
 
@@ -16,11 +19,12 @@ var MAX_QUEUE int = 100
 type Payload struct {
 	// [redacted]
 	// storageFolder string
+	Id int
 }
 
 func (p *Payload) UploadToS3() error {
 	time.Sleep(200 * time.Millisecond)
-	fmt.Println("Upload success...")
+	fmt.Println("Upload success...", p.Id)
 	return nil
 	// the storageFolder method ensures that there are no name collision in
 	// case we get same timestamp in the key name
@@ -116,7 +120,10 @@ func (d *Dispatcher) Run() {
 }
 
 func (d *Dispatcher) dispatch() {
+	// count := 0
 	for job := range JobQueue {
+		// count += 1
+		// fmt.Println("count:", count)
 		// a job request has been received
 		go func(job Job) {
 			// try to obtain a worker job channel that is available.
@@ -150,14 +157,29 @@ func (d *Dispatcher) dispatch() {
 // A buffered channel that we can send work requests on.
 var JobQueue chan Job = make(chan Job, MAX_QUEUE)
 
-func main() {
+// 启动 worker server
+func workerServer() {
 	// 初始化 dispatcher
 	dispatcher := NewDispatcher(MAX_WORKER)
 	// 开始运行
 	dispatcher.Run()
+}
 
-	for {
+func main() {
+	// 启动 worker 服务
+	workerServer()
+
+	// 初始化监听器
+	l, _ := net.Listen("tcp", ":8000")
+	// 配置健康检查路由
+	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		w.Write([]byte("ok"))
+	})
+	// 配置服务路由
+	http.HandleFunc("/payload", func(w http.ResponseWriter, _ *http.Request) {
 		JobQueue <- Job{Payload{}}
-		time.Sleep(2 * time.Second)
-	}
+		w.Write([]byte("ok"))
+	})
+	// 启动 http 服务
+	log.Fatal(http.Serve(l, nil))
 }
