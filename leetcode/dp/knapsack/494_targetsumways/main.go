@@ -92,8 +92,9 @@ func findTargetSumWays(nums []int, target int) int {
 	dp[0] = 1
 	for i := 0; i < N; i++ {
 		for w := W; w >= 0; w-- {
-			if w >= nums[i] {
-				dp[w] = dp[w] + dp[w-nums[i]]
+			v := nums[i]
+			if w >= v {
+				dp[w] = dp[w] + dp[w-v]
 			}
 		}
 	}
@@ -102,6 +103,7 @@ func findTargetSumWays(nums []int, target int) int {
 }
 
 func main() {
+	fmt.Println("nums:[0,0,0,0,0,0,0,0,1] target:1 => 256", findTargetSumWays([]int{0, 0, 0, 0, 0, 0, 0, 0, 1}, 1))
 	fmt.Println("nums:[1,1,1,1,1] target:3 => 5", findTargetSumWays([]int{1, 1, 1, 1, 1}, 3))
 	fmt.Println("nums:[1] target:1 => 1", findTargetSumWays([]int{1}, 1))
 	fmt.Println("nums:[100] target:-200 => 0", findTargetSumWays([]int{100}, -200))
