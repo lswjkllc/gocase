@@ -69,10 +69,11 @@ func canPartition(nums []int) bool {
 
 	dp := make([]bool, W+1)
 	dp[0] = true
-	for i := 1; i <= N; i++ {
-		for w := W; w >= 0; w-- {
-			if w >= nums[i-1] {
-				dp[w] = dp[w] || dp[w-nums[i-1]]
+	for i := 0; i < N; i++ {
+		v := nums[i]
+		for w := W; w >= 1; w-- {
+			if w >= v {
+				dp[w] = dp[w] || dp[w-v]
 			}
 		}
 	}
@@ -81,6 +82,7 @@ func canPartition(nums []int) bool {
 }
 
 func main() {
+	fmt.Println("nums:[1,2,5] => false", canPartition([]int{1, 2, 5}))
 	fmt.Println("nums:[1,5,11,5] => true", canPartition([]int{1, 5, 11, 5}))
 	fmt.Println("nums:[1,2,3,5] => false", canPartition([]int{1, 2, 3, 5}))
 }
