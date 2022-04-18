@@ -57,9 +57,10 @@ func change(amount int, coins []int) int {
 	dp[0] = 1
 
 	for i := 0; i < N; i++ {
+		v := coins[i]
 		for j := 1; j <= W; j++ {
-			if j-coins[i] >= 0 {
-				dp[j] = dp[j] + dp[j-coins[i]]
+			if j >= v {
+				dp[j] = dp[j] + dp[j-v]
 			}
 		}
 	}
