@@ -57,11 +57,11 @@ func maxProfit(prices []int) int {
 	dp_i20, dp_i21 := 0, math.MinInt32
 	for i := 0; i < pLen; i++ {
 		// 1 次交易
-		dp_i11 = Max(dp_i11, -prices[i])
 		dp_i10 = Max(dp_i10, dp_i11+prices[i])
+		dp_i11 = Max(dp_i11, -prices[i])
 		// 2 次交易
-		dp_i21 = Max(dp_i21, dp_i10-prices[i])
 		dp_i20 = Max(dp_i20, dp_i21+prices[i])
+		dp_i21 = Max(dp_i21, dp_i10-prices[i])
 	}
 
 	return dp_i20
