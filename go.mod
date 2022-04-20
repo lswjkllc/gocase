@@ -5,6 +5,7 @@ go 1.15
 require (
 	github.com/go-playground/assert/v2 v2.0.1
 	github.com/golang/protobuf v1.5.2
+	github.com/google/flatbuffers v1.12.1 // indirect
 	github.com/google/go-cmp v0.5.7 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/marusama/cyclicbarrier v1.1.0
