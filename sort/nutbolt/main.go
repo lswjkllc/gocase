@@ -18,47 +18,39 @@ func MatchNutBolt(nuts, bolts []int, left, right int) {
 	if left < right {
 		// 根据第一个螺母，将螺钉排序
 		tmp := nuts[left]
-		i, j := left, right
-		for i < j {
-			for i < j && bolts[i] < tmp {
-				i++
-			}
-			for i < j && bolts[j] > tmp {
-				j--
-			}
-			if i < j {
-				bolts[i], bolts[j] = bolts[j], bolts[i]
-			}
-		}
-		bolts[i] = tmp
-		bolts[left], bolts[i] = bolts[i], bolts[left]
+		pivotIdx := sortNums(bolts, left, right, tmp)
+		bolts[left], bolts[pivotIdx] = bolts[pivotIdx], bolts[left]
 		// 结果：螺钉首元素和螺母首元素匹配
 
 		// 根据第二个螺钉，将螺母排序
 		tmp = bolts[left+1]
-		i, j = left+1, right
-		for i < j {
-			for i < j && nuts[i] < tmp {
-				i++
-			}
-			for i < j && nuts[j] > tmp {
-				j--
-			}
-			if i < j {
-				nuts[i], nuts[j] = nuts[j], nuts[i]
-			}
-		}
-		nuts[i] = tmp
-		nuts[left+1], nuts[i] = nuts[i], nuts[left+1]
+		pivotIdx = sortNums(nuts, left+1, right, tmp)
+		nuts[left+1], nuts[pivotIdx] = nuts[pivotIdx], nuts[left+1]
 		// 结果：螺母第二元素和螺钉第二元素匹配
 
 		// 汇总：螺母和螺钉 首元素和第二元素 分别匹配
 
 		// 匹配较小部分
-		MatchNutBolt(nuts, bolts, left+2, i)
+		MatchNutBolt(nuts, bolts, left+2, pivotIdx)
 		// 匹配较大部分
-		MatchNutBolt(nuts, bolts, i+1, right)
+		MatchNutBolt(nuts, bolts, pivotIdx+1, right)
 	}
+}
+
+func sortNums(nums []int, left, right int, target int) int {
+	for left < right {
+		for left < right && nums[left] < target {
+			left++
+		}
+		for left < right && nums[right] > target {
+			right--
+		}
+		if left < right {
+			nums[left], nums[right] = nums[right], nums[left]
+		}
+	}
+	nums[left] = target
+	return left
 }
 
 func main() {
