@@ -9,7 +9,7 @@ func quickSort(nums []int) []int {
 
 func _quickSort(nums []int, left, right int) []int {
 	if left < right {
-		partitionIdx := partition3(nums, left, right)
+		partitionIdx := partition2(nums, left, right)
 		_quickSort(nums, left, partitionIdx-1)
 		_quickSort(nums, partitionIdx+1, right)
 	}
@@ -44,21 +44,29 @@ func partition3(nums []int, left, right int) int {
 	return left
 }
 
-func partition2(nums []int, low, high int) int {
-	pivot := nums[low]
-	for low < high {
-		for low < high && nums[high] > pivot {
-			high--
+func partition2(nums []int, left, right int) int {
+	// 将左指针的值选定为 基准值
+	pivot := nums[left] //! 第一次 保存左指针指针的值 -------
+	// 外循环
+	for left < right {
+		// 右指针: 从右向左扫描, 找到 第一个一个小于基准值 的索引
+		for left < right && nums[right] >= pivot {
+			right--
 		}
-		nums[low] = nums[high]
+		// 将 左指针的值 替换为 右指针的值
+		nums[left] = nums[right] //! 保存右指针的值 ------- 原左指针的值保存在 基准/右指针 值中
 
-		for low < high && nums[low] < pivot {
-			low++
+		// 左指针: 从左向右扫描, 找到 第一个大于基准值 的索引
+		for left < right && nums[left] <= pivot {
+			left++
 		}
-		nums[high] = nums[low]
+		// 将 右指针的值 替换为 左指针的值
+		nums[right] = nums[left] //! 保存左指针的值 ------- 原右指针的值保存在左指针中
 	}
-	nums[low] = pivot
-	return low
+	// 将 左指针的值 替换为 基准值
+	nums[left] = pivot //! 保存基准值（此时, left == right, left中的值和上一轮中的right是重复的）
+	// 响应左指针（此时, 左右指针理论上是相等的）
+	return left
 }
 
 func partition(nums []int, left, right int) int {
