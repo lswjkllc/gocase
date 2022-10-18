@@ -12,6 +12,8 @@ import "fmt"
 	螺母和螺钉之间可以比较
 */
 
+// 参考链接: https://blog.csdn.net/summer2day/article/details/95979090
+
 func MatchNutBolt(nuts, bolts []int, left, right int) {
 	if left < right {
 		// 根据第一个螺母，将螺钉排序
