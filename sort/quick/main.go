@@ -9,11 +9,28 @@ func quickSort(nums []int) []int {
 
 func _quickSort(nums []int, left, right int) []int {
 	if left < right {
-		partitionIdx := partition(nums, left, right)
+		partitionIdx := partition2(nums, left, right)
 		_quickSort(nums, left, partitionIdx-1)
 		_quickSort(nums, partitionIdx+1, right)
 	}
 	return nums
+}
+
+func partition2(nums []int, low, high int) int {
+	pivot := nums[low]
+	if low < high {
+		if low < high && nums[high] >= pivot {
+			high--
+		}
+		nums[low] = nums[high]
+
+		if low < high && nums[low] <= pivot {
+			low++
+		}
+		nums[high] = nums[low]
+	}
+	nums[low] = pivot
+	return low
 }
 
 func partition(nums []int, left, right int) int {
