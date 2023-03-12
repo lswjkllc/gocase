@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 /*
 题⽬⼤意
@@ -23,6 +26,38 @@ import "fmt"
 type ListNode struct {
 	Val  int
 	Next *ListNode
+}
+
+func (s *ListNode) String() string {
+	values := []int{}
+	for s != nil {
+		values = append(values, s.Val)
+		s = s.Next
+	}
+	return JoinIntSlice(ReverseIntSlice(values), "")
+}
+
+func ReverseIntSlice(s []int) []int {
+	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
+		s[i], s[j] = s[j], s[i]
+	}
+	return s
+}
+
+func JoinIntSlice(s []int, sep string) string {
+	if len(s) == 0 {
+		return ""
+	}
+
+	var b strings.Builder
+	b.Grow(len(s) + (len(s)-1)*len(sep))
+	for i, v := range s {
+		if i > 0 {
+			b.WriteString(sep)
+		}
+		b.WriteString(fmt.Sprintf("%d", v))
+	}
+	return b.String()
 }
 
 func AddTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
@@ -61,6 +96,5 @@ func AddTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 func main() {
 	l1 := &ListNode{Val: 1, Next: &ListNode{Val: 2, Next: &ListNode{Val: 3, Next: nil}}}
 	l2 := &ListNode{Val: 3, Next: &ListNode{Val: 7, Next: &ListNode{Val: 5, Next: nil}}}
-	fmt.Println(AddTwoNumbers(l1, l2))
-
+	fmt.Printf("321 + 573 == 894: %s\n", AddTwoNumbers(l1, l2))
 }
