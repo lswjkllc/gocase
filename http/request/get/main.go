@@ -109,7 +109,14 @@ func get5() {
 	req.Header.Add("name", "zhaofan")
 	req.Header.Add("age", "3")
 
-	resp, _ := client.Do(req)
+	resp, err := client.Do(req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(body))
