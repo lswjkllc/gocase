@@ -129,7 +129,7 @@ type EndAction struct {
 }
 
 func (s *EndAction) Run(i interface{}) {
-	fmt.Println("wear over")
+	fmt.Println("穿戴完成")
 	s.s.Do(func() { s.done <- struct{}{} })
 }
 
@@ -137,49 +137,49 @@ func (s *EndAction) Run(i interface{}) {
 type PantiesAction struct{}
 
 func (s *PantiesAction) Run(i interface{}) {
-	fmt.Println("wear panties...")
+	fmt.Println("穿内裤...")
 }
 
 // 穿袜子
 type SockAction struct{}
 
 func (s *SockAction) Run(i interface{}) {
-	fmt.Println("wear sock...")
+	fmt.Println("穿袜子...")
 }
 
 // 穿衬衣
 type ShirtAction struct{}
 
 func (s *ShirtAction) Run(i interface{}) {
-	fmt.Println("wear shirt...")
+	fmt.Println("穿衬衣...")
 }
 
 // 戴手表
 type WatchAction struct{}
 
 func (s *WatchAction) Run(i interface{}) {
-	fmt.Println("wear watch...")
+	fmt.Println("带手表...")
 }
 
 // 穿裤子
 type PantsAction struct{}
 
 func (s *PantsAction) Run(i interface{}) {
-	fmt.Println("wear pants...")
+	fmt.Println("穿裤子...")
 }
 
 // 穿鞋
 type ShoeAction struct{}
 
 func (s *ShoeAction) Run(i interface{}) {
-	fmt.Println("wear shoe...")
+	fmt.Println("穿鞋子...")
 }
 
 // 穿外套
 type CoatAction struct{}
 
 func (s *CoatAction) Run(i interface{}) {
-	fmt.Println("wear coat...")
+	fmt.Println("穿外套...")
 }
 
 // 工具方法
