@@ -21,3 +21,4 @@ local/
 tests/
 .DS_Store
 test.go
+*.db

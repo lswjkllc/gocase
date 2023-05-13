@@ -5,6 +5,7 @@ go 1.15
 require (
 	cloud.google.com/go/compute v1.6.1 // indirect
 	github.com/beefsack/go-rate v0.0.0-20220214233405-116f4ca011a0
+	github.com/boltdb/bolt v1.3.1
 	github.com/bytedance/sonic v1.8.7 // indirect
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-playground/assert/v2 v2.2.0
